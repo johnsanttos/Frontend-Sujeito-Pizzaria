@@ -4,6 +4,8 @@ import Image from "../../node_modules/next/image";
 
 import styles from '../../styles/home.module.scss'
 
+import { Button } from "../components/ui/Button/index";
+
 import { Input } from "../components/ui/input/index";
 
 import logoimg from '../../public/logo.svg'
@@ -35,6 +37,14 @@ export default function Home() {
               placeholder="Sua senha"
               type="password"
             />
+
+            <Button
+              type="submit"
+              loading={false}
+            >
+
+              Acessar
+            </Button>
           </form>
 
         </div>
