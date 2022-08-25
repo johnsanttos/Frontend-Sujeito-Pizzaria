@@ -8,6 +8,8 @@ import { Button } from "../components/ui/Button/index";
 
 import { Input } from "../components/ui/input/index";
 
+import Link from "next/link";
+
 import logoimg from '../../public/logo.svg'
 
 
@@ -25,7 +27,7 @@ export default function Home() {
 
         <Image src={logoimg} alt={"Logo Sujeito Pizzaria"} />
 
-        <div className="styles.login">
+        <div className={styles.login}>
 
           <form>
             <Input
@@ -47,6 +49,10 @@ export default function Home() {
             </Button>
           </form>
 
+          <Link
+          href="/signup"> 
+           <a className={styles.text}> Não possui uma conta? Cadastre-se</a>
+            </Link>
         </div>
 
 
