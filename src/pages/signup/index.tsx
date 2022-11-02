@@ -6,7 +6,7 @@ import styles from '../../../styles/home.module.scss';
 
 import { Button } from "../../components/ui/Button/index";
 
-import { Input } from "../../components/ui/input/index";
+import { Input } from "../../components/ui/Input/index";
 
 import Link from "next/link";
 
@@ -28,11 +28,11 @@ export default function SignUp() {
         <Image src={logoimg} alt={"Logo Sujeito Pizzaria"} />
 
         <div className={styles.login}>
-            <h1> Criando sua conta</h1>
+          <h1> Criando sua conta</h1>
 
           <form>
 
-          <Input
+            <Input
               placeholder="Digite seu nome "
               type="text"
             />
@@ -57,8 +57,8 @@ export default function SignUp() {
           </form>
 
           <Link
-          href="/"> 
-           <a className={styles.text}> Já possui uma conta? Faça login!</a> 
+            href="/">
+            <a className={styles.text}> Já possui uma conta? Faça login!</a>
           </Link>
         </div>
 

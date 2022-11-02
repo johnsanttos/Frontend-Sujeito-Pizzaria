@@ -8,7 +8,7 @@ import styles from '../../styles/home.module.scss'
 
 import { Button } from "../components/ui/Button/index";
 
-import { Input } from "../components/ui/input/index";
+import { Input } from "../components/ui/Input/index";
 
 import Link from "next/link";
 
