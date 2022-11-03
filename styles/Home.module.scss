@@ -1,4 +1,4 @@
-.containerCenter{
+.containerCenter {
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -7,39 +7,39 @@
   background-color: var(--gray-900);
 }
 
-.login{
-  margin-top:2rem;
+.login {
+  margin-top: 2rem;
   width: 600px;
   display: flex;
   align-items: center;
   flex-direction: column;
   padding: 2rem 1.5rem;
- 
-  h1{
+
+  h1 {
     color: var(--white);
     padding-bottom: 1rem;
   }
 
-  form{
+  form {
     width: 90%;
     display: flex;
     flex-direction: column;
   }
 
-  form button{
+  form button {
     height: 40px;
-    font-size: 1.2rem ;
+    font-size: 1.2rem;
   }
-
 }
 
-.text{
-  margin-top: 1rem ;
+.text {
+  margin-top: 1rem;
   color: var(--white);
   cursor: pointer;
 }
 
-@media (max-width: 620px){
-.login{
-  width: 90%;
-}}
+@media (max-width: 620px) {
+  .login {
+    width: 90%;
+  }
+}

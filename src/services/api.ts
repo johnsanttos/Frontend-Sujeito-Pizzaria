@@ -11,6 +11,7 @@ export function setupAPIClient(ctx = undefined) {
         baseURL: 'http://localhost:3333',
         headers: {
             Authorization: `Bearer ${cookies['@nextauth.token']}`
+            //Salvou o token do usuario aqui
         }
     })
 

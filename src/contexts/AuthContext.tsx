@@ -30,6 +30,7 @@ export const AuthContext = createContext({} as AuthContextData)
 export function signOut(){
     try{
         destroyCookie(undefined,'@nextauth.token')
+        //destroyCookie vai destruir o token usuario salvo em '@nextauth.token'
         Router.push('/')
     } catch{
         console.log('erro ao deslogar')
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const isAutheticated = !!user
 
    async function signIn({email,password}: SignInProps) {
-      
+      alert('Clicou karaiiii')
     console.log( 'Dados email ', email)
     console.log( 'Dados password ', password)
     }
