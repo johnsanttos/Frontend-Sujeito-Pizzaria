@@ -1,17 +1,11 @@
 import Head from 'next/head'
-
+import {toast }from 'react-toastify'
 import Image from 'next/image'
-
 import styles from '../../../styles/home.module.scss'
-
 import { Button } from '../../components/ui/Button/index'
-
 import { Input } from '../../components/ui/Input/index'
-
 import { AuthContext, signOut } from '../../contexts/AuthContext'
-
 import Link from 'next/link'
-
 import logoimg from '../../../public/logo.svg'
 import { FormEvent, useContext, useState } from 'react'
 
@@ -28,7 +22,7 @@ const {signUp} = useContext(AuthContext)
     event.preventDefault() 
     
     if( name === "" || email === "" || password ==="") {
-      alert("PREENCHA TODOS OS CAMPOS")
+      toast.error('Preencha todos os campos!')
       return
     }
 setLoading(true)

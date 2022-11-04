@@ -1,19 +1,12 @@
 import { FormEvent, useContext, useState } from 'react'
-
+import {toast }from 'react-toastify'
 import Head from '../../node_modules/next/head'
-
 import Image from '../../node_modules/next/image'
-
 import styles from '../../styles/home.module.scss'
-
 import { Button } from '../components/ui/Button/index'
-
 import { Input } from '../components/ui/Input/index'
-
 import Link from 'next/link'
-
 import { AuthContext } from '../contexts/AuthContext'
-
 import logoimg from '../../public/logo.svg'
 
 export default function Home() {
@@ -27,7 +20,7 @@ export default function Home() {
     event.preventDefault()
     // event: FormEvent e event.preventDefault evita a pagina de recarregar sozinha qdo utilizamos formularios
     if (email === "" || password === "" ) {
-      alert("PREENCHA OS DADOS")
+      toast.error('Preencha todos os campos!')
           return
         }
 
