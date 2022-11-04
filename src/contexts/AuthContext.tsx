@@ -8,6 +8,7 @@ type AuthContextData = {
   isAutheticated: boolean
   signIn: (credentials: SignInProps) => Promise<void>
   signOut: () => void
+  signUp: (credentials: SignUpProps) => Promise <void>
 }
 
 type UserProps = {
@@ -21,6 +22,12 @@ type SignInProps = {
   password: string
 }
 
+type SignUpProps ={
+  name: string,
+  email: string,
+  password: string
+
+}
 type AuthProviderProps = {
   children: ReactNode
 }
@@ -38,6 +45,8 @@ export function signOut() {
   }
 }
 
+
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>()
   //!!user duas esclamações antes da variavel significa que esta convertendo em booleano, se user estiver vazio vai converter para falso, se tiver algo na varialvel sera true, estara logado
@@ -52,7 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       //descontruindo response.data
       const { id, name, token } = response.data
-
+ 
       // console.log('ariosvaldo ', response.data)
 
       //salvando o token no cookies
@@ -77,8 +86,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signUp({name,email,password}:SignUpProps){
+try{
+
+  const response = await api.post('/users' , {
+    name,
+    email,
+    password
+  })
+
+  console.log('CADASTRADO COM SUCESSO!')
+
+  Router.push('/')
+
+}catch(err){
+  console.log('ERRO AO CADASTRAR' , err)
+}
+  }
   return (
-    <AuthContext.Provider value={{ user, isAutheticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isAutheticated, signIn, signOut, signUp}}>
       {children}
     </AuthContext.Provider>
   )

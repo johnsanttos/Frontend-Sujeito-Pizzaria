@@ -26,13 +26,21 @@ export default function Home() {
   async function handleLogin(event: FormEvent) {
     event.preventDefault()
     // event: FormEvent e event.preventDefault evita a pagina de recarregar sozinha qdo utilizamos formularios
+    if (email === "" || password === "" ) {
+      alert("PREENCHA OS DADOS")
+          return
+        }
 
+        setLoading(true)
     let data = {
       email,
       password,
     }
     await signIn(data)
+
+    setLoading(false)
   }
+
 
   return (
     <>
@@ -59,7 +67,7 @@ export default function Home() {
               onChange={(event) => setPasword(event.target.value)}
             />
 
-            <Button type="submit" loading={false}>
+            <Button type="submit" loading={loading}>
               Acessar
             </Button>
           </form>
