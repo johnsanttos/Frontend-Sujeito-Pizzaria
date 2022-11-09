@@ -1,5 +1,6 @@
 import { destroyCookie, setCookie, parseCookies } from 'nookies'
-import {toast }from 'react-toastify'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { api } from '../services/apiClient'
 import Router from 'next/router'
 import { createContext, ReactNode, useState } from 'react'
@@ -9,7 +10,7 @@ type AuthContextData = {
   isAutheticated: boolean
   signIn: (credentials: SignInProps) => Promise<void>
   signOut: () => void
-  signUp: (credentials: SignUpProps) => Promise <void>
+  signUp: (credentials: SignUpProps) => Promise<void>
 }
 
 type UserProps = {
@@ -23,11 +24,10 @@ type SignInProps = {
   password: string
 }
 
-type SignUpProps ={
-  name: string,
-  email: string,
+type SignUpProps = {
+  name: string
+  email: string
   password: string
-
 }
 type AuthProviderProps = {
   children: ReactNode
@@ -46,12 +46,30 @@ export function signOut() {
   }
 }
 
-
-
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>()
   //!!user duas esclamações antes da variavel significa que esta convertendo em booleano, se user estiver vazio vai converter para falso, se tiver algo na varialvel sera true, estara logado
   const isAutheticated = !!user
+
+  useEffect(() => {
+    // tentar pegar algo no cookie
+    const { '@nextauth.token': token } = parseCookies()
+    if (token) {
+      api.get('/me').then((response) => {
+        //pegar do  response.data {id, name, email}
+        const { id, name, email } = response.data
+        setUser({
+          id,
+          name,
+          email,
+        })
+      })
+      .catch(()=>{
+        // se der erro ao encontrar o token deslogamos o user.
+        signOut()
+      })
+    }
+  }, [])
 
   async function signIn({ email, password }: SignInProps) {
     try {
@@ -62,7 +80,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       //descontruindo response.data
       const { id, name, token } = response.data
- 
+
       // console.log('ariosvaldo ', response.data)
 
       //salvando o token no cookies
@@ -83,34 +101,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       //redirecionar para a /dashboard
       Router.push('/dashboard')
-      
     } catch (err) {
-
-      toast.error("Erro ao acessar!")
+      toast.error('Erro ao acessar!')
       console.log('ERRO AO ACESSAR ', err)
     }
   }
 
-  async function signUp({name,email,password}:SignUpProps){
-try{
+  async function signUp({ name, email, password }: SignUpProps) {
+    try {
+      const response = await api.post('/users', {
+        name,
+        email,
+        password,
+      })
 
-  const response = await api.post('/users' , {
-    name,
-    email,
-    password
-  })
+      toast.success('Consta criada com sucesso!')
 
-  toast.success('Consta criada com sucesso!')
-
-  Router.push('/')
-
-}catch(err){
-  toast.error("Erro ao cadastrar!")
-  console.log('ERRO AO CADASTRAR' , err)
-}
+      Router.push('/')
+    } catch (err) {
+      toast.error('Erro ao cadastrar!')
+      console.log('ERRO AO CADASTRAR', err)
+    }
   }
   return (
-    <AuthContext.Provider value={{ user, isAutheticated, signIn, signOut, signUp}}>
+    <AuthContext.Provider
+      value={{ user, isAutheticated, signIn, signOut, signUp }}
+    >
       {children}
     </AuthContext.Provider>
   )

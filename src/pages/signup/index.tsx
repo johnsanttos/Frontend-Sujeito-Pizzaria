@@ -1,3 +1,4 @@
+import { FormEvent, useContext, useState } from 'react'
 import Head from 'next/head'
 import {toast }from 'react-toastify'
 import Image from 'next/image'
@@ -7,7 +8,7 @@ import { Input } from '../../components/ui/Input/index'
 import { AuthContext, signOut } from '../../contexts/AuthContext'
 import Link from 'next/link'
 import logoimg from '../../../public/logo.svg'
-import { FormEvent, useContext, useState } from 'react'
+
 
 export default function SignUp() {
 
