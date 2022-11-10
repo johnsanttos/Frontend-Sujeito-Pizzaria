@@ -1,18 +1,14 @@
-import { Html, Head, Main, NextScript } from "../../node_modules/next/document"
+import { Html, Head, Main, NextScript } from '../../node_modules/next/document'
 
 export default function Document() {
-    return (
-        <Html>
-            <Head>
+  return (
+    <Html>
+      <Head></Head>
 
-            </Head>
-
-            <body>
-
-                <Main />
-                <NextScript />
-            </body>
-
-        </Html>
-    )
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  )
 }
