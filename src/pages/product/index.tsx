@@ -3,11 +3,31 @@ import styles from './styles.module.scss'
 import Head from 'next/head'
 import { Header } from '../../components/Header'
 import { FiUpload } from 'react-icons/fi'
+import { setupAPIClient } from '../../services/api'
 import { canSSRAuth } from '../../utils/canSSRAuth'
+import { type } from 'os'
 
-export default function Product() {
+type ItemProps ={
+  id: string,
+  name: string
+}
+
+// para tipar listas  categoryList: ItemProps[]
+interface CategoryProps {
+  categoryList: ItemProps[]
+}
+
+export default function Product({categoryList}:CategoryProps) {
+
+  console.log(categoryList)
+
   const [avatarUrl, setAvatarUrl] = useState('')
   const [imageVatar, setImageAvatar] = useState(null)
+
+  const[categories, setCategories] = useState (categoryList || [])
+
+  const[categorySelected, setCategorySelected] = useState(0)
+
 
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) {
@@ -27,6 +47,15 @@ export default function Product() {
 
     }
   }
+  //quando voce seleciona uma nova categoria na lista
+  function handleChangeCategory(event){
+    //console.log ("POSIÇÃO DA CATEGORIA SELECIONADA" ,   event.target.value)
+    //console.log ("Categoria selecionada" ,   categories[event.target.value])
+
+    setCategorySelected(event.target.value)
+
+  }
+
 
   return (
     <>
@@ -65,9 +94,22 @@ export default function Product() {
               )}
             </label>
 
-            <select>
-              <option>Bebida</option>
-              <option>pizza</option>
+            <select 
+            value={categorySelected}
+            onChange={handleChangeCategory}
+            >
+              {
+                categories.map( (item, index)=>{
+                return(
+                  <option key={item.id} value={index}>
+                    {item.name}
+                  </option>
+                )
+                }
+
+                )
+              }
+             
             </select>
 
             <input
@@ -98,7 +140,15 @@ export default function Product() {
 }
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
+const apiClient = setupAPIClient(ctx)
+
+const response = await apiClient.get('/category')
+//console.log(response.data)
+
   return {
-    props: {},
+    
+    props: {
+      categoryList: response.data
+    },
   }
 })
