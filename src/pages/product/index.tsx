@@ -82,6 +82,7 @@ export default function Product({ categoryList }: CategoryProps) {
       toast.error('Ops erro ao cadastrar!')
     }
 
+    //multipart formdata
     setName('')
     setPrice('')
     setDescription('')
