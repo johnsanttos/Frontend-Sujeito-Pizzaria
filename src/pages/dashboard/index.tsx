@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import Modal from 'react-modal'
 import { FiRefreshCcw } from 'react-icons/fi'
 import { Header } from '../../components/Header'
 import { setupAPIClient } from '../../services/api'
@@ -18,14 +19,40 @@ interface HomeProps {
   orders: OrderProps[]
 }
 
+type OrderItemProps ={
+  id: string;
+  smount: number;
+  order_id: string
+  product_id: string
+  product: {
+    id: string
+    name: string
+    description:string
+    price:string
+    banner: string
+  }
+  order:{
+    id: string
+    table: string | number
+    status:boolean
+    name: string|null
+  }
+}
+
 export default function Dashboard({ orders }: HomeProps) {
   console.log('iaiaioo', orders)
 
   const [orderList, setOrderList] = useState(orders || [])
 
+  const [modalItem, setModalItem] = useState()
+  const  [modalVisible, setModalVisible]=useState(false)
+
+
 function handleOpenModalView(id:string){
 	alert('opa')
 }
+
+Modal.setAppElement('#__next')
   return (
     <>
       <Head>
