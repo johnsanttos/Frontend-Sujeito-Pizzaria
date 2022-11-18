@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Modal from 'react-modal'
 import { FiRefreshCcw } from 'react-icons/fi'
+import { ModalOrder } from '../../components/ModalOrder'
 import { Header } from '../../components/Header'
 import { setupAPIClient } from '../../services/api'
 import { canSSRAuth } from '../../utils/canSSRAuth'
@@ -19,23 +20,23 @@ interface HomeProps {
   orders: OrderProps[]
 }
 
-type OrderItemProps ={
-  id: string;
-  smount: number;
+export type OrderItemProps = {
+  id: string
+  amount: number
   order_id: string
   product_id: string
   product: {
     id: string
     name: string
-    description:string
-    price:string
+    description: string
+    price: string
     banner: string
   }
-  order:{
+  order: {
     id: string
     table: string | number
-    status:boolean
-    name: string|null
+    status: boolean
+    name: string | null
   }
 }
 
@@ -44,15 +45,26 @@ export default function Dashboard({ orders }: HomeProps) {
 
   const [orderList, setOrderList] = useState(orders || [])
 
-  const [modalItem, setModalItem] = useState()
-  const  [modalVisible, setModalVisible]=useState(false)
+  const [modalItem, setModalItem] = useState<OrderItemProps[]>()
+  const [modalVisible, setModalVisible] = useState(false)
 
-
-function handleOpenModalView(id:string){
-	alert('opa')
+function handleCloseModal(){
+  setModalVisible(false)
 }
 
-Modal.setAppElement('#__next')
+
+  async function handleOpenModalView(id: string) {
+    const apiClient = setupAPIClient()
+    const response = await apiClient.get('/order/detail', {
+      params: {
+        order_id: id,
+      },
+    })
+    setModalItem(response.data)
+    setModalVisible(true)
+  }
+
+  Modal.setAppElement('#__next')
   return (
     <>
       <Head>
@@ -71,18 +83,26 @@ Modal.setAppElement('#__next')
           </div>
 
           <article className={styles.listOrders}>
-
             {orderList.map((item) => (
               <section key={item.id} className={styles.orderItem}>
-				{/* Foi passado o item.id para a função que vai chamar o modal */}
-                <button onClick={ () => handleOpenModalView(item.id)}>
+                {/* Foi passado o item.id para a função que vai chamar o modal */}
+                <button onClick={() => handleOpenModalView(item.id)}>
                   <div className={styles.tag}></div>
                   <span> Mesa {item.table}</span>
                 </button>
               </section>
             ))}
-
           </article>
+
+          {
+            modalVisible && (
+              <ModalOrder
+              isOpen={modalVisible}
+              onRequestClose={handleCloseModal}
+              order={modalItem}
+              />
+            )
+          }
         </main>
       </div>
     </>
